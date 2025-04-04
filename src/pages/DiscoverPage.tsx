@@ -90,7 +90,7 @@ const DiscoverPage: React.FC = () => {
       business: 'Brew Heaven Café',
       location: '300m away',
       expiresIn: '2 hours',
-      type: 'both', // for both professional and social users
+      type: 'both' as const, // Fixed: using 'as const' to ensure proper typing
       image: '/placeholder.svg'
     },
     {
@@ -100,7 +100,7 @@ const DiscoverPage: React.FC = () => {
       business: 'The Productive Space',
       location: '1.2km away',
       expiresIn: '5 hours',
-      type: 'professional',
+      type: 'professional' as const, // Fixed: using 'as const' to ensure proper typing
       image: '/placeholder.svg'
     },
     {
@@ -110,7 +110,7 @@ const DiscoverPage: React.FC = () => {
       business: 'Rhythm Club',
       location: '800m away',
       expiresIn: '8 hours',
-      type: 'social',
+      type: 'social' as const, // Fixed: using 'as const' to ensure proper typing
       image: '/placeholder.svg'
     }
   ];
