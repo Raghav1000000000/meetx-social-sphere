@@ -11,8 +11,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ChatBubbleIcon, ShareIcon } from '@radix-ui/react-icons';
-import { MapPin } from 'lucide-react';
+import { MapPin, MessageCircle } from 'lucide-react';
 
 interface ProfileCardProps {
   type: 'professional' | 'social';
@@ -145,7 +144,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           size="sm"
           onClick={onConnect}
         >
-          <ChatBubbleIcon className="mr-2 h-4 w-4" />
+          <MessageCircle className="mr-2 h-4 w-4" />
           Connect
         </Button>
       </CardFooter>

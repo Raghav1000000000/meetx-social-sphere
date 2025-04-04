@@ -68,13 +68,13 @@ const MessagesPage: React.FC = () => {
         {
           id: 'm3',
           senderId: 'u1',
-          text: 'I'm developing a new app for remote team collaboration. Would love to get your thoughts on it!',
+          text: "I'm developing a new app for remote team collaboration. Would love to get your thoughts on it!",
           timestamp: '10:34 AM',
         },
         {
           id: 'm4',
           senderId: 'current-user',
-          text: 'That sounds interesting! I'd be happy to chat about it.',
+          text: "That sounds interesting! I'd be happy to chat about it.",
           timestamp: '10:40 AM',
         },
         {
