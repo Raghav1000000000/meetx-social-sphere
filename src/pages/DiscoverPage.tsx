@@ -44,7 +44,7 @@ const DiscoverPage: React.FC = () => {
   return (
     <MainLayout>
       <div className={`container max-w-5xl mx-auto py-8 ${mode === 'professional' ? 'professional-theme' : 'social-theme'}`}>
-        <h1 className="text-3xl font-bold mb-2">Discover People</h1>
+        <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-mode-primary to-mode-secondary bg-clip-text text-transparent">Discover People</h1>
         <p className="text-muted-foreground mb-6">
           Find {mode === 'professional' ? 'professionals' : 'social connections'} based on your location
         </p>
@@ -69,9 +69,19 @@ const DiscoverPage: React.FC = () => {
           onValueChange={handleModeChange}
           value={mode}
         >
-          <TabsList className={`mb-8 bg-gradient-to-r from-mode-primary/30 to-mode-secondary/30`}>
-            <TabsTrigger value="professional" className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800">Professional</TabsTrigger>
-            <TabsTrigger value="social" className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800">Social</TabsTrigger>
+          <TabsList className="mb-8 border border-mode-primary/30 bg-background">
+            <TabsTrigger 
+              value="professional" 
+              className={`${mode === 'professional' ? 'bg-mode-primary text-white' : 'bg-transparent'} transition-all duration-300`}
+            >
+              Professional
+            </TabsTrigger>
+            <TabsTrigger 
+              value="social"
+              className={`${mode === 'social' ? 'bg-mode-primary text-white' : 'bg-transparent'} transition-all duration-300`}
+            >
+              Social
+            </TabsTrigger>
           </TabsList>
           
           <TabsContent value="professional" className="animate-fade-in">

@@ -16,19 +16,9 @@ import {
   MessageCircle, 
   Star, 
   ExternalLink, 
-  Briefcase, 
-  Calendar, 
   User as UserIcon,
-  ChevronDown,
-  ChevronUp
 } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { Progress } from '@/components/ui/progress';
 
 interface SocialHandle {
   platform: string;
@@ -95,7 +85,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   onConnect,
 }) => {
   const { mode } = useTheme();
-  const [showDetails, setShowDetails] = useState(false);
   
   // Get initials for avatar fallback
   const getInitials = (name: string) => {
@@ -108,13 +97,13 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
   // Determine card color based on user's selected mode
   const cardColorClass = type === 'professional' 
-    ? 'border-mode-primary/30 hover:border-mode-primary' 
-    : 'border-mode-primary/30 hover:border-mode-primary';
+    ? 'border-mode-primary/30 hover:border-mode-primary shadow-md hover:shadow-lg' 
+    : 'border-mode-primary/30 hover:border-mode-primary shadow-md hover:shadow-lg';
   
   // Determine badge color based on user's selected mode
   const badgeColorClass = type === 'professional'
-    ? 'bg-mode-primary/20 text-mode-primary border-none'
-    : 'bg-mode-primary/20 text-mode-primary border-none';
+    ? 'bg-mode-primary/20 text-mode-primary border-none badge-animated'
+    : 'bg-mode-primary/20 text-mode-primary border-none badge-animated';
 
   // Calculate average rating
   const averageRating = reviews.length 
@@ -122,7 +111,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     : 0;
 
   return (
-    <Card className={`w-full max-w-md animate-fade-in overflow-hidden border-2 transition-all duration-300 hover:shadow-lg ${cardColorClass}`}>
+    <Card className={`w-full max-w-md animate-fade-in overflow-hidden border-2 transition-all duration-300 ${cardColorClass}`}>
       <CardHeader className="relative pb-2">
         {isLive && (
           <div className="absolute top-4 right-4 flex items-center gap-1.5 animate-pulse-subtle">
@@ -134,14 +123,14 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           </div>
         )}
         <div className="flex items-start gap-4">
-          <Avatar className="h-14 w-14 transition-transform hover:scale-105 duration-300">
+          <Avatar className="h-16 w-16 ring-2 ring-mode-primary/30 transition-transform hover:scale-110 duration-300">
             <AvatarImage src={avatar} alt={name} />
-            <AvatarFallback className={`bg-mode-primary text-white`}>
+            <AvatarFallback className={`bg-gradient-to-br from-mode-primary to-mode-secondary text-white font-bold`}>
               {getInitials(name)}
             </AvatarFallback>
           </Avatar>
           <div className="flex-1">
-            <CardTitle className="text-xl">{name}</CardTitle>
+            <CardTitle className="text-xl bg-gradient-to-r from-mode-primary to-mode-secondary bg-clip-text text-transparent">{name}</CardTitle>
             {type === 'professional' && (
               <CardDescription className="text-sm font-medium text-gray-600 dark:text-gray-400">
                 {title}{company ? ` at ${company}` : ''}
@@ -179,7 +168,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           <div className="mt-3">
             <h4 className="text-sm font-medium mb-2">Skills</h4>
             <div className="flex flex-wrap gap-1.5">
-              {skills.map((skill, idx) => (
+              {skills.slice(0, 3).map((skill, idx) => (
                 <Badge 
                   key={idx} 
                   variant="outline" 
@@ -189,19 +178,24 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                   {skill}
                 </Badge>
               ))}
+              {skills.length > 3 && (
+                <Badge variant="outline" className="bg-background text-muted-foreground">
+                  +{skills.length - 3} more
+                </Badge>
+              )}
             </div>
           </div>
         )}
         
         {type === 'social' && (
           <>
-            {bio && <p className="text-sm mt-2">{bio}</p>}
+            {bio && <p className="text-sm mt-2 line-clamp-2">{bio}</p>}
             
             {interests.length > 0 && (
               <div className="mt-3">
                 <h4 className="text-sm font-medium mb-2">Interests</h4>
                 <div className="flex flex-wrap gap-1.5">
-                  {interests.map((interest, idx) => (
+                  {interests.slice(0, 3).map((interest, idx) => (
                     <Badge 
                       key={idx} 
                       variant="outline" 
@@ -211,104 +205,34 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                       {interest}
                     </Badge>
                   ))}
+                  {interests.length > 3 && (
+                    <Badge variant="outline" className="bg-background text-muted-foreground">
+                      +{interests.length - 3} more
+                    </Badge>
+                  )}
                 </div>
               </div>
             )}
           </>
         )}
         
-        {/* Collapsible additional details section */}
-        <Collapsible open={showDetails} onOpenChange={setShowDetails} className="mt-4">
-          <CollapsibleTrigger asChild>
-            <Button variant="ghost" size="sm" className="w-full flex items-center justify-center gap-1 py-1 h-auto text-xs">
-              {showDetails ? "Show less" : "Show more details"}
-              {showDetails ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
-            </Button>
-          </CollapsibleTrigger>
-          
-          <CollapsibleContent className="mt-3 space-y-4">
-            {/* Experience (Professional) */}
-            {type === 'professional' && experience.length > 0 && (
-              <div>
-                <h4 className="text-sm font-medium mb-2 flex items-center">
-                  <Briefcase className="h-3 w-3 mr-1 text-mode-primary" />
-                  Experience
-                </h4>
-                <div className="space-y-3">
-                  {experience.map((exp, idx) => (
-                    <div key={idx} className="text-sm">
-                      <div className="font-medium">{exp.role}</div>
-                      <div className="text-muted-foreground text-xs flex items-center">
-                        {exp.company} · <Calendar className="h-3 w-3 mx-1" /> {exp.duration}
-                      </div>
-                      {exp.description && (
-                        <p className="text-xs mt-1 text-gray-600 dark:text-gray-400">{exp.description}</p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-            
-            {/* Social Handles */}
-            {socialHandles.length > 0 && (
-              <div>
-                <h4 className="text-sm font-medium mb-2 flex items-center">
-                  <ExternalLink className="h-3 w-3 mr-1 text-mode-primary" />
-                  Connect Online
-                </h4>
-                <div className="flex flex-wrap gap-2">
-                  {socialHandles.map((handle, idx) => (
-                    <a 
-                      key={idx}
-                      href={handle.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs flex items-center gap-1 bg-background py-1 px-2 rounded-full border hover:bg-mode-primary/10 transition-colors"
-                    >
-                      {handle.platform} <ExternalLink className="h-3 w-3" />
-                    </a>
-                  ))}
-                </div>
-              </div>
-            )}
-            
-            {/* Reviews */}
-            {reviews.length > 0 && (
-              <div>
-                <h4 className="text-sm font-medium mb-2 flex items-center">
-                  <Star className="h-3 w-3 mr-1 text-mode-primary" fill="currentColor" />
-                  Top Review
-                </h4>
-                {reviews.slice(0, 1).map((review, idx) => (
-                  <div key={idx} className="text-xs p-2 bg-background rounded-md border">
-                    <div className="flex justify-between items-center mb-1">
-                      <div className="font-medium flex items-center">
-                        <UserIcon className="h-3 w-3 mr-1" /> {review.reviewer}
-                      </div>
-                      <div className="flex">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                          <Star 
-                            key={star} 
-                            className={`h-3 w-3 ${star <= review.rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`} 
-                          />
-                        ))}
-                      </div>
-                    </div>
-                    <p className="text-gray-600 dark:text-gray-400">{review.comment}</p>
-                    <div className="text-gray-500 mt-1 text-[10px]">{review.date}</div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </CollapsibleContent>
-        </Collapsible>
+        {reviews.length > 0 && (
+          <div className="mt-4 pt-4 border-t">
+            <div className="flex items-center gap-2 mb-2">
+              <UserIcon className="h-3 w-3 text-mode-primary" />
+              <h4 className="text-sm font-medium">Top Review</h4>
+            </div>
+            <div className="text-xs bg-background/50 p-2 rounded-md border border-border/50 italic">
+              "{reviews[0].comment}"
+            </div>
+          </div>
+        )}
       </CardContent>
       
       <CardFooter className="flex justify-between gap-2 pt-2">
         <Button
           variant="outline"
-          className={`flex-1 transition-colors duration-300 hover:bg-mode-primary/20`}
+          className={`flex-1 transition-colors duration-300 hover:bg-mode-primary/20 border-mode-primary/30`}
           size="sm"
           onClick={onViewProfile}
         >

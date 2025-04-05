@@ -101,7 +101,7 @@ const Index: React.FC = () => {
             
             <div className="flex flex-col sm:flex-row gap-4 mt-6">
               <GoLiveButton />
-              <Button variant="outline" asChild>
+              <Button variant="outline" className="border-mode-primary/30 hover:bg-mode-primary/10" asChild>
                 <Link to="/discover">Discover People</Link>
               </Button>
             </div>
@@ -114,14 +114,15 @@ const Index: React.FC = () => {
             {features.map((feature, index) => (
               <Card 
                 key={index} 
-                className="animate-fade-in hover-lift" 
-                style={{ animationDelay: `${index * 100}ms` }}
+                className="staggered-item border-2 border-transparent hover:border-mode-primary/30 transition-all duration-300" 
               >
                 <CardHeader className="text-center">
                   <div className="flex justify-center">
-                    {feature.icon}
+                    <div className="p-3 rounded-full bg-mode-primary/10 float-animation">
+                      {feature.icon}
+                    </div>
                   </div>
-                  <CardTitle>{feature.title}</CardTitle>
+                  <CardTitle className="mt-2">{feature.title}</CardTitle>
                   <CardDescription>
                     {feature.description}
                   </CardDescription>
@@ -134,7 +135,7 @@ const Index: React.FC = () => {
                 <CardFooter>
                   <Button 
                     variant="outline" 
-                    className="w-full hover:bg-mode-primary/10 border-mode-primary/30" 
+                    className="w-full border-mode-primary/30 hover:bg-mode-primary/10 hover-lift" 
                     asChild
                   >
                     <Link to={feature.link}>{feature.action}</Link>

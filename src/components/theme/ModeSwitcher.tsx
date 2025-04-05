@@ -8,11 +8,16 @@ import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 
 interface ModeSwitcherProps {
-  variant?: 'button' | 'radio' | 'hero';
+  variant?: 'button' | 'radio' | 'hero' | 'minimal';
   className?: string;
+  showLabels?: boolean;
 }
 
-const ModeSwitcher: React.FC<ModeSwitcherProps> = ({ variant = 'button', className = '' }) => {
+const ModeSwitcher: React.FC<ModeSwitcherProps> = ({ 
+  variant = 'button', 
+  className = '',
+  showLabels = true
+}) => {
   const { mode, setMode } = useTheme();
 
   const handleModeChange = (newMode: 'professional' | 'social') => {
@@ -71,6 +76,31 @@ const ModeSwitcher: React.FC<ModeSwitcherProps> = ({ variant = 'button', classNa
         >
           <Users className="h-5 w-5" />
           Social
+        </Button>
+      </div>
+    );
+  }
+
+  if (variant === 'minimal') {
+    return (
+      <div className={`flex gap-1 ${className}`}>
+        <Button
+          size="sm"
+          variant={mode === 'professional' ? 'default' : 'ghost'}
+          className={`${mode === 'professional' ? 'bg-mode-primary hover:bg-mode-primary/90' : ''} p-1`}
+          onClick={() => handleModeChange('professional')}
+        >
+          <Briefcase className="h-4 w-4" />
+          {showLabels && <span className="ml-1 text-xs">Pro</span>}
+        </Button>
+        <Button
+          size="sm"
+          variant={mode === 'social' ? 'default' : 'ghost'}
+          className={`${mode === 'social' ? 'bg-mode-primary hover:bg-mode-primary/90' : ''} p-1`}
+          onClick={() => handleModeChange('social')}
+        >
+          <Users className="h-4 w-4" />
+          {showLabels && <span className="ml-1 text-xs">Social</span>}
         </Button>
       </div>
     );

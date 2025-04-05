@@ -111,7 +111,7 @@ const ProfilePage: React.FC = () => {
           
           <TabsContent value="preview">
             <div className="grid md:grid-cols-2 gap-6">
-              {(mode === 'professional' || mode === 'both') && (
+              {mode === 'professional' && (
                 <div className="space-y-4 animate-fade-in">
                   <h3 className="font-medium text-lg">Professional Card Preview</h3>
                   <ProfileCard 
@@ -122,7 +122,7 @@ const ProfilePage: React.FC = () => {
                 </div>
               )}
               
-              {(mode === 'social' || mode === 'both') && (
+              {mode === 'social' && (
                 <div className="space-y-4 animate-fade-in" style={{ animationDelay: '100ms' }}>
                   <h3 className="font-medium text-lg">Social Card Preview</h3>
                   <ProfileCard 

@@ -58,7 +58,7 @@ const Navbar: React.FC = () => {
         </Link>
 
         <div className="flex items-center ml-4 md:ml-6">
-          <ModeSwitcher />
+          <ModeSwitcher variant="minimal" showLabels={false} />
         </div>
 
         <div className="ml-auto flex items-center gap-2">
@@ -66,8 +66,9 @@ const Navbar: React.FC = () => {
           
           {isAuthenticated ? (
             <>
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" className="relative">
                 <Bell className="h-5 w-5" />
+                <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
               </Button>
               <Button variant="ghost" size="icon">
                 <MessageSquare className="h-5 w-5" />
@@ -75,9 +76,11 @@ const Navbar: React.FC = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                    <Avatar className="h-9 w-9">
+                    <Avatar className="h-9 w-9 ring-2 ring-mode-primary/30">
                       <AvatarImage src="/placeholder.svg" alt="User" />
-                      <AvatarFallback>US</AvatarFallback>
+                      <AvatarFallback className="bg-gradient-to-r from-mode-primary to-mode-secondary text-white font-bold">
+                        US
+                      </AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
@@ -89,9 +92,11 @@ const Navbar: React.FC = () => {
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    <User className="mr-2 h-4 w-4" />
-                    <span>Profile</span>
+                  <DropdownMenuItem asChild>
+                    <Link to="/profile" className="flex cursor-pointer items-center">
+                      <User className="mr-2 h-4 w-4" />
+                      <span>Profile</span>
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <Settings className="mr-2 h-4 w-4" />
