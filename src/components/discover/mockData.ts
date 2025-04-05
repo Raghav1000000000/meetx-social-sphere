@@ -114,7 +114,7 @@ export const professionalUsers: ProfessionalUser[] = [
       {
         reviewer: 'James Wilson',
         rating: 5,
-        comment: 'Sophia's designs are beautiful and functional.',
+        comment: "Sophia's designs are beautiful and functional.",
         date: 'February 12, 2023'
       }
     ]
@@ -164,7 +164,7 @@ export const socialUsers: SocialUser[] = [
       {
         reviewer: 'Ethan Taylor',
         rating: 4,
-        comment: 'Olivia's yoga sessions are super refreshing.',
+        comment: "Olivia's yoga sessions are super refreshing.",
         date: 'March 15, 2023'
       }
     ]
