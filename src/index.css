@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -14,9 +15,9 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
 
-    /* MeetX purple as primary */
-    --primary: 255 85% 75%;
-    --primary-foreground: 210 40% 98%;
+    /* Mode colors - will be updated dynamically */
+    --mode-primary: 210 100% 50%;
+    --mode-secondary: 160 100% 40%;
 
     /* Light purple as secondary */
     --secondary: 250 100% 94%;
@@ -34,9 +35,12 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 255 85% 75%;
+    --ring: var(--mode-primary);
 
     --radius: 0.75rem;
+    
+    --primary: var(--mode-primary);
+    --primary-foreground: 210 40% 98%;
   }
 
   .dark {
@@ -48,9 +52,6 @@
 
     --popover: 222 47% 11%;
     --popover-foreground: 210 40% 98%;
-
-    --primary: 255 85% 75%;
-    --primary-foreground: 222 47% 11%;
 
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -66,7 +67,21 @@
 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 255 85% 75%;
+    
+    --primary: var(--mode-primary);
+    --primary-foreground: 222 47% 11%;
+  }
+
+  /* Professional mode theme */
+  .professional-mode {
+    --mode-primary: 210 100% 50%; /* #007BFF */
+    --mode-secondary: 160 100% 40%; /* #00cc99 */
+  }
+
+  /* Social mode theme */
+  .social-mode {
+    --mode-primary: 341 100% 65%; /* #FF4E8D */
+    --mode-secondary: 50 100% 50%; /* #ffd700 */
   }
 }
 
@@ -76,22 +91,28 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground transition-colors duration-300;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  /* Smooth transitions for theme changes */
+  body,
+  .mode-transition-element {
+    @apply transition-colors duration-300;
   }
 }
 
 @layer components {
   .meetx-gradient {
-    @apply bg-gradient-to-r from-meetx-purple to-meetx-blue;
+    @apply bg-gradient-to-r from-mode-primary to-mode-secondary;
   }
   
   .meetx-gradient-multi {
-    @apply bg-gradient-to-r from-meetx-purple via-meetx-blue to-meetx-green;
+    @apply bg-gradient-to-r from-mode-primary via-mode-secondary to-meetx-green;
   }
   
   .meetx-card {
-    @apply bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl;
+    @apply bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl;
   }
   
   .live-pulse {
@@ -117,12 +138,12 @@
 
   /* Professional mode specific styles */
   .professional-theme {
-    @apply bg-gradient-to-br from-meetx-blue/10 to-meetx-blue-light/5;
+    @apply bg-gradient-to-br from-blue-500/10 to-teal-500/5 dark:from-blue-900/20 dark:to-teal-900/10;
   }
 
   /* Social mode specific styles */
   .social-theme {
-    @apply bg-gradient-to-br from-meetx-purple/10 to-meetx-pink/5;
+    @apply bg-gradient-to-br from-pink-500/10 to-yellow-500/5 dark:from-pink-900/20 dark:to-yellow-900/10;
   }
 }
 
@@ -160,49 +181,6 @@
   }
 }
 
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
 /* Animation delay utility classes */
 .animation-delay-0 { animation-delay: 0ms; }
 .animation-delay-1 { animation-delay: 100ms; }
@@ -210,3 +188,23 @@
 .animation-delay-3 { animation-delay: 300ms; }
 .animation-delay-4 { animation-delay: 400ms; }
 .animation-delay-5 { animation-delay: 500ms; }
+
+/* Dark mode styles */
+.dark .card,
+.dark .button,
+.dark .input {
+  @apply border-gray-700;
+}
+
+.dark .text-muted-foreground {
+  @apply text-gray-400;
+}
+
+.dark .bg-background {
+  @apply bg-gray-900;
+}
+
+/* Let's create test document class for generating test screenshots */
+.test-document {
+  @apply hidden;
+}

@@ -57,6 +57,9 @@ export default {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))'
         },
+        // Dynamic mode colors
+        'mode-primary': 'hsl(var(--mode-primary))',
+        'mode-secondary': 'hsl(var(--mode-secondary))',
         meetx: {
           purple: {
             DEFAULT: '#9b87f5',

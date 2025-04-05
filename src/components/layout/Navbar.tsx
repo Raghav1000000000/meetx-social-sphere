@@ -20,6 +20,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import ThemeSwitcher from '@/components/theme/ThemeSwitcher';
+import ModeSwitcher from '@/components/theme/ModeSwitcher';
+import { useTheme } from '@/contexts/ThemeContext';
 
 /**
  * Navbar - Top navigation bar for the MeetX application
@@ -27,6 +30,7 @@ import {
  */
 const Navbar: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { mode } = useTheme();
 
   // This would be replaced with actual auth logic
   const handleLogout = () => {
@@ -45,15 +49,21 @@ const Navbar: React.FC = () => {
         </div>
 
         <Link to="/" className="flex items-center gap-2 mr-4">
-          <span className="hidden md:inline-flex text-2xl font-bold meetx-gradient bg-clip-text text-transparent">
+          <span className="hidden md:inline-flex text-2xl font-bold bg-gradient-to-r from-mode-primary to-mode-secondary bg-clip-text text-transparent">
             MeetX
           </span>
-          <span className="md:hidden text-2xl font-bold meetx-gradient bg-clip-text text-transparent">
+          <span className="md:hidden text-2xl font-bold bg-gradient-to-r from-mode-primary to-mode-secondary bg-clip-text text-transparent">
             MX
           </span>
         </Link>
 
+        <div className="flex items-center ml-4 md:ml-6">
+          <ModeSwitcher />
+        </div>
+
         <div className="ml-auto flex items-center gap-2">
+          <ThemeSwitcher />
+          
           {isAuthenticated ? (
             <>
               <Button variant="ghost" size="icon">
@@ -100,7 +110,7 @@ const Navbar: React.FC = () => {
               <Button variant="ghost" asChild>
                 <Link to="/login">Log In</Link>
               </Button>
-              <Button className="bg-meetx-purple hover:bg-meetx-purple/90" asChild>
+              <Button className="bg-mode-primary hover:bg-mode-primary/90" asChild>
                 <Link to="/signup">Sign Up</Link>
               </Button>
             </>

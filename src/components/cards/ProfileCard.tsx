@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   Card, 
   CardContent, 
@@ -11,7 +11,44 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { MapPin, MessageCircle } from 'lucide-react';
+import { 
+  MapPin, 
+  MessageCircle, 
+  Star, 
+  ExternalLink, 
+  Briefcase, 
+  Calendar, 
+  User as UserIcon,
+  ChevronDown,
+  ChevronUp
+} from 'lucide-react';
+import { useTheme } from '@/contexts/ThemeContext';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { Progress } from '@/components/ui/progress';
+
+interface SocialHandle {
+  platform: string;
+  url: string;
+  username: string;
+}
+
+interface Experience {
+  role: string;
+  company: string;
+  duration: string;
+  description?: string;
+}
+
+interface ReviewItem {
+  reviewer: string;
+  rating: number;
+  comment: string;
+  date: string;
+}
 
 interface ProfileCardProps {
   type: 'professional' | 'social';
@@ -24,9 +61,13 @@ interface ProfileCardProps {
   title?: string;
   company?: string;
   skills?: string[];
+  experience?: Experience[];
   // Social specific props
   interests?: string[];
   bio?: string;
+  // Common additional props
+  socialHandles?: SocialHandle[];
+  reviews?: ReviewItem[];
   onViewProfile?: () => void;
   onConnect?: () => void;
 }
@@ -47,9 +88,15 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   skills = [],
   interests = [],
   bio,
+  experience = [],
+  socialHandles = [],
+  reviews = [],
   onViewProfile,
   onConnect,
 }) => {
+  const { mode } = useTheme();
+  const [showDetails, setShowDetails] = useState(false);
+  
   // Get initials for avatar fallback
   const getInitials = (name: string) => {
     return name
@@ -59,15 +106,20 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       .toUpperCase();
   };
 
-  // Determine card color based on type
+  // Determine card color based on user's selected mode
   const cardColorClass = type === 'professional' 
-    ? 'border-meetx-blue-light hover:border-meetx-blue' 
-    : 'border-meetx-purple-light hover:border-meetx-purple';
+    ? 'border-mode-primary/30 hover:border-mode-primary' 
+    : 'border-mode-primary/30 hover:border-mode-primary';
   
-  // Determine badge color based on type
+  // Determine badge color based on user's selected mode
   const badgeColorClass = type === 'professional'
-    ? 'bg-meetx-blue-light/30 text-meetx-blue border-none'
-    : 'bg-meetx-purple-light/30 text-meetx-purple-dark border-none';
+    ? 'bg-mode-primary/20 text-mode-primary border-none'
+    : 'bg-mode-primary/20 text-mode-primary border-none';
+
+  // Calculate average rating
+  const averageRating = reviews.length 
+    ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length 
+    : 0;
 
   return (
     <Card className={`w-full max-w-md animate-fade-in overflow-hidden border-2 transition-all duration-300 hover:shadow-lg ${cardColorClass}`}>
@@ -84,14 +136,14 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         <div className="flex items-start gap-4">
           <Avatar className="h-14 w-14 transition-transform hover:scale-105 duration-300">
             <AvatarImage src={avatar} alt={name} />
-            <AvatarFallback className={type === 'professional' ? 'bg-meetx-blue text-white' : 'bg-meetx-purple text-white'}>
+            <AvatarFallback className={`bg-mode-primary text-white`}>
               {getInitials(name)}
             </AvatarFallback>
           </Avatar>
           <div className="flex-1">
             <CardTitle className="text-xl">{name}</CardTitle>
             {type === 'professional' && (
-              <CardDescription className="text-sm font-medium text-gray-600">
+              <CardDescription className="text-sm font-medium text-gray-600 dark:text-gray-400">
                 {title}{company ? ` at ${company}` : ''}
               </CardDescription>
             )}
@@ -104,6 +156,22 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             )}
           </div>
         </div>
+        
+        {reviews.length > 0 && (
+          <div className="flex items-center mt-2 text-sm">
+            <div className="flex">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Star 
+                  key={star} 
+                  className={`h-4 w-4 ${star <= Math.round(averageRating) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`} 
+                />
+              ))}
+            </div>
+            <span className="ml-1 text-gray-600 dark:text-gray-400">
+              ({reviews.length} {reviews.length === 1 ? 'review' : 'reviews'})
+            </span>
+          </div>
+        )}
       </CardHeader>
       
       <CardContent className="pb-4">
@@ -148,19 +216,106 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             )}
           </>
         )}
+        
+        {/* Collapsible additional details section */}
+        <Collapsible open={showDetails} onOpenChange={setShowDetails} className="mt-4">
+          <CollapsibleTrigger asChild>
+            <Button variant="ghost" size="sm" className="w-full flex items-center justify-center gap-1 py-1 h-auto text-xs">
+              {showDetails ? "Show less" : "Show more details"}
+              {showDetails ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+            </Button>
+          </CollapsibleTrigger>
+          
+          <CollapsibleContent className="mt-3 space-y-4">
+            {/* Experience (Professional) */}
+            {type === 'professional' && experience.length > 0 && (
+              <div>
+                <h4 className="text-sm font-medium mb-2 flex items-center">
+                  <Briefcase className="h-3 w-3 mr-1 text-mode-primary" />
+                  Experience
+                </h4>
+                <div className="space-y-3">
+                  {experience.map((exp, idx) => (
+                    <div key={idx} className="text-sm">
+                      <div className="font-medium">{exp.role}</div>
+                      <div className="text-muted-foreground text-xs flex items-center">
+                        {exp.company} · <Calendar className="h-3 w-3 mx-1" /> {exp.duration}
+                      </div>
+                      {exp.description && (
+                        <p className="text-xs mt-1 text-gray-600 dark:text-gray-400">{exp.description}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            {/* Social Handles */}
+            {socialHandles.length > 0 && (
+              <div>
+                <h4 className="text-sm font-medium mb-2 flex items-center">
+                  <ExternalLink className="h-3 w-3 mr-1 text-mode-primary" />
+                  Connect Online
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {socialHandles.map((handle, idx) => (
+                    <a 
+                      key={idx}
+                      href={handle.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs flex items-center gap-1 bg-background py-1 px-2 rounded-full border hover:bg-mode-primary/10 transition-colors"
+                    >
+                      {handle.platform} <ExternalLink className="h-3 w-3" />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            {/* Reviews */}
+            {reviews.length > 0 && (
+              <div>
+                <h4 className="text-sm font-medium mb-2 flex items-center">
+                  <Star className="h-3 w-3 mr-1 text-mode-primary" fill="currentColor" />
+                  Top Review
+                </h4>
+                {reviews.slice(0, 1).map((review, idx) => (
+                  <div key={idx} className="text-xs p-2 bg-background rounded-md border">
+                    <div className="flex justify-between items-center mb-1">
+                      <div className="font-medium flex items-center">
+                        <UserIcon className="h-3 w-3 mr-1" /> {review.reviewer}
+                      </div>
+                      <div className="flex">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <Star 
+                            key={star} 
+                            className={`h-3 w-3 ${star <= review.rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`} 
+                          />
+                        ))}
+                      </div>
+                    </div>
+                    <p className="text-gray-600 dark:text-gray-400">{review.comment}</p>
+                    <div className="text-gray-500 mt-1 text-[10px]">{review.date}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CollapsibleContent>
+        </Collapsible>
       </CardContent>
       
       <CardFooter className="flex justify-between gap-2 pt-2">
         <Button
           variant="outline"
-          className={`flex-1 transition-colors duration-300 ${type === 'professional' ? 'hover:bg-meetx-blue-light/50' : 'hover:bg-meetx-purple-light/50'}`}
+          className={`flex-1 transition-colors duration-300 hover:bg-mode-primary/20`}
           size="sm"
           onClick={onViewProfile}
         >
           View Profile
         </Button>
         <Button
-          className={`flex-1 transition-transform duration-300 hover:scale-105 ${type === 'professional' ? 'bg-meetx-blue hover:bg-meetx-blue-light' : 'bg-meetx-purple hover:bg-meetx-purple-dark'}`}
+          className={`flex-1 transition-transform duration-300 hover:scale-105 bg-mode-primary hover:bg-mode-primary/90`}
           size="sm"
           onClick={onConnect}
         >

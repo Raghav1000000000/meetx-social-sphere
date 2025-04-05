@@ -14,6 +14,7 @@ import {
 import { AdBanner } from '@/components/ads/AdBanner';
 import { toast } from 'sonner';
 import { MapPin, Clock } from 'lucide-react';
+import { useTheme } from '@/contexts/ThemeContext';
 
 /**
  * DiscoverPage - Page for discovering users
@@ -21,7 +22,12 @@ import { MapPin, Clock } from 'lucide-react';
  * Includes location-based advertising section
  */
 const DiscoverPage: React.FC = () => {
-  const [mode, setMode] = useState<'professional' | 'social'>('professional');
+  const { mode, setMode } = useTheme();
+  
+  // Sync the local state with the global theme mode
+  const handleModeChange = (value: string) => {
+    setMode(value as 'professional' | 'social');
+  };
   
   // Mock data for users
   const professionalUsers = [
@@ -33,6 +39,39 @@ const DiscoverPage: React.FC = () => {
       skills: ['React', 'Node.js', 'MongoDB'],
       location: 'San Francisco, CA',
       distance: '1.5km',
+      experience: [
+        {
+          role: 'Senior Developer',
+          company: 'Tech Innovators',
+          duration: '2021 - Present',
+          description: 'Leading the development of web applications'
+        },
+        {
+          role: 'Developer',
+          company: 'CodeCraft',
+          duration: '2018 - 2021'
+        }
+      ],
+      socialHandles: [
+        {
+          platform: 'LinkedIn',
+          url: 'https://linkedin.com/in/emilychen',
+          username: 'emilychen'
+        },
+        {
+          platform: 'GitHub',
+          url: 'https://github.com/emilychen',
+          username: 'emilychen'
+        }
+      ],
+      reviews: [
+        {
+          reviewer: 'David Kim',
+          rating: 5,
+          comment: 'Emily is an excellent developer with strong problem-solving skills.',
+          date: 'January 10, 2023'
+        }
+      ]
     },
     {
       type: 'professional' as const,
@@ -42,6 +81,29 @@ const DiscoverPage: React.FC = () => {
       skills: ['Strategy', 'User Research', 'Agile'],
       location: 'Chicago, IL',
       distance: '800m',
+      experience: [
+        {
+          role: 'Product Manager',
+          company: 'Product Vision',
+          duration: '2019 - Present',
+          description: 'Managing product development lifecycle'
+        }
+      ],
+      socialHandles: [
+        {
+          platform: 'LinkedIn',
+          url: 'https://linkedin.com/in/jameswilson',
+          username: 'jameswilson'
+        }
+      ],
+      reviews: [
+        {
+          reviewer: 'Sophia Martinez',
+          rating: 4,
+          comment: 'James has a great strategic vision for products.',
+          date: 'March 5, 2023'
+        }
+      ]
     },
     {
       type: 'professional' as const,
@@ -51,6 +113,38 @@ const DiscoverPage: React.FC = () => {
       skills: ['UI Design', 'Wireframing', 'Prototyping'],
       location: 'Boston, MA',
       distance: '2.3km',
+      experience: [
+        {
+          role: 'UX Designer',
+          company: 'Creative Solutions',
+          duration: '2020 - Present'
+        },
+        {
+          role: 'UI Designer',
+          company: 'Design Studio',
+          duration: '2017 - 2020'
+        }
+      ],
+      socialHandles: [
+        {
+          platform: 'Dribbble',
+          url: 'https://dribbble.com/sophiam',
+          username: 'sophiam'
+        },
+        {
+          platform: 'LinkedIn',
+          url: 'https://linkedin.com/in/sophiamartinez',
+          username: 'sophiamartinez'
+        }
+      ],
+      reviews: [
+        {
+          reviewer: 'James Wilson',
+          rating: 5,
+          comment: 'Sophia's designs are beautiful and functional.',
+          date: 'February 12, 2023'
+        }
+      ]
     },
   ];
   
@@ -62,6 +156,21 @@ const DiscoverPage: React.FC = () => {
       interests: ['Coffee', 'Photography', 'Urban Exploration'],
       location: 'New York, NY',
       distance: '1.2km',
+      socialHandles: [
+        {
+          platform: 'Instagram',
+          url: 'https://instagram.com/davidkim',
+          username: 'davidkim'
+        }
+      ],
+      reviews: [
+        {
+          reviewer: 'Olivia Brown',
+          rating: 5,
+          comment: 'David knows the best coffee spots in town!',
+          date: 'April 3, 2023'
+        }
+      ]
     },
     {
       type: 'social' as const,
@@ -70,6 +179,21 @@ const DiscoverPage: React.FC = () => {
       interests: ['Yoga', 'Nutrition', 'Mindfulness'],
       location: 'Austin, TX',
       distance: '3.5km',
+      socialHandles: [
+        {
+          platform: 'Instagram',
+          url: 'https://instagram.com/oliviabwellness',
+          username: 'oliviabwellness'
+        }
+      ],
+      reviews: [
+        {
+          reviewer: 'Ethan Taylor',
+          rating: 4,
+          comment: 'Olivia's yoga sessions are super refreshing.',
+          date: 'March 15, 2023'
+        }
+      ]
     },
     {
       type: 'social' as const,
@@ -78,6 +202,26 @@ const DiscoverPage: React.FC = () => {
       interests: ['Music Production', 'Vinyl Records', 'Concerts'],
       location: 'Nashville, TN',
       distance: '900m',
+      socialHandles: [
+        {
+          platform: 'SoundCloud',
+          url: 'https://soundcloud.com/ethantaylor',
+          username: 'ethantaylor'
+        },
+        {
+          platform: 'Instagram',
+          url: 'https://instagram.com/ethantmusic',
+          username: 'ethantmusic'
+        }
+      ],
+      reviews: [
+        {
+          reviewer: 'David Kim',
+          rating: 5,
+          comment: 'Ethan has an amazing taste in music and always finds the best records.',
+          date: 'January 28, 2023'
+        }
+      ]
     },
   ];
   
@@ -135,22 +279,18 @@ const DiscoverPage: React.FC = () => {
     });
   };
   
-  const handleModeChange = (value: string) => {
-    setMode(value as 'professional' | 'social');
-  };
-  
   return (
     <MainLayout>
-      <div className="container max-w-5xl mx-auto py-8">
+      <div className={`container max-w-5xl mx-auto py-8 ${mode === 'professional' ? 'professional-theme' : 'social-theme'}`}>
         <h1 className="text-3xl font-bold mb-2">Discover People</h1>
         <p className="text-muted-foreground mb-6">
-          Find professionals and social connections based on your location
+          Find {mode === 'professional' ? 'professionals' : 'social connections'} based on your location
         </p>
         
         {/* Location-based Ads Section */}
         <div className="mb-8 animate-fade-in">
           <h2 className="text-xl font-semibold mb-4 flex items-center">
-            <MapPin className="mr-2 h-5 w-5 text-meetx-orange" /> 
+            <MapPin className={`mr-2 h-5 w-5 text-mode-primary`} /> 
             Nearby Opportunities
             <span className="text-sm font-normal text-muted-foreground ml-2">
               (Based on your location)
@@ -189,14 +329,14 @@ const DiscoverPage: React.FC = () => {
         </div>
         
         <Tabs 
-          defaultValue="professional" 
+          defaultValue={mode} 
           className="w-full"
           onValueChange={handleModeChange}
           value={mode}
         >
-          <TabsList className="mb-8 bg-gradient-to-r from-meetx-purple/50 to-meetx-blue/50">
-            <TabsTrigger value="professional" className="data-[state=active]:bg-white">Professional</TabsTrigger>
-            <TabsTrigger value="social" className="data-[state=active]:bg-white">Social</TabsTrigger>
+          <TabsList className={`mb-8 bg-gradient-to-r from-mode-primary/30 to-mode-secondary/30`}>
+            <TabsTrigger value="professional" className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800">Professional</TabsTrigger>
+            <TabsTrigger value="social" className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800">Social</TabsTrigger>
           </TabsList>
           
           <TabsContent value="professional" className="animate-fade-in">
