@@ -44,32 +44,38 @@
   }
 
   .dark {
+    /* Pure black background */
     --background: 0 0% 0%;
     --foreground: 0 0% 98%;
 
-    --card: 0 0% 5%;
+    /* Pure black cards with slight difference */
+    --card: 0 0% 3%;
     --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 5%;
+    /* Pure black popovers with slight difference */
+    --popover: 0 0% 3%;
     --popover-foreground: 0 0% 98%;
 
-    --secondary: 0 0% 15%;
+    /* Pure black secondary with slight difference */
+    --secondary: 0 0% 5%;
     --secondary-foreground: 0 0% 98%;
 
-    --muted: 0 0% 20%;
+    /* Dark gray for muted elements */
+    --muted: 0 0% 10%;
     --muted-foreground: 0 0% 65%;
 
-    --accent: 0 0% 25%;
+    /* Dark gray for accent elements */
+    --accent: 0 0% 8%;
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 25%;
-    --input: 0 0% 25%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
     
     --primary: var(--mode-primary);
-    --primary-foreground: 0 0% 5%;
+    --primary-foreground: 0 0% 0%;
   }
 
   /* Professional mode theme */
