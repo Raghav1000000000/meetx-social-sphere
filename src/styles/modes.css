@@ -1,0 +1,26 @@
+
+@layer base {
+  /* Professional mode theme */
+  .professional-mode {
+    --mode-primary: 210 100% 50%; /* #007BFF */
+    --mode-secondary: 160 100% 40%; /* #00cc99 */
+  }
+
+  /* Social mode theme */
+  .social-mode {
+    --mode-primary: 341 100% 65%; /* #FF4E8D */
+    --mode-secondary: 50 100% 50%; /* #ffd700 */
+  }
+}
+
+@layer components {
+  /* Professional mode specific styles */
+  .professional-theme {
+    @apply bg-gradient-to-br from-blue-500/10 to-teal-500/5 dark:from-blue-900/5 dark:to-teal-900/5;
+  }
+
+  /* Social mode specific styles */
+  .social-theme {
+    @apply bg-gradient-to-br from-pink-500/10 to-yellow-500/5 dark:from-pink-900/5 dark:to-yellow-900/5;
+  }
+}

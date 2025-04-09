@@ -1,0 +1,42 @@
+
+@keyframes enterAnimation {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes floatAnimation {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.float-animation {
+  animation: floatAnimation 4s ease-in-out infinite;
+}
+
+.staggered-item {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.staggered-item:nth-child(1) { animation: fadeInUp 0.5s 0.1s forwards; }
+.staggered-item:nth-child(2) { animation: fadeInUp 0.5s 0.2s forwards; }
+.staggered-item:nth-child(3) { animation: fadeInUp 0.5s 0.3s forwards; }
+.staggered-item:nth-child(4) { animation: fadeInUp 0.5s 0.4s forwards; }
+.staggered-item:nth-child(5) { animation: fadeInUp 0.5s 0.5s forwards; }
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animation delay utility classes */
+.animation-delay-0 { animation-delay: 0ms; }
+.animation-delay-1 { animation-delay: 100ms; }
+.animation-delay-2 { animation-delay: 200ms; }
+.animation-delay-3 { animation-delay: 300ms; }
+.animation-delay-4 { animation-delay: 400ms; }
+.animation-delay-5 { animation-delay: 500ms; }

@@ -1,0 +1,76 @@
+
+@layer base {
+  :root {
+    /* Define base theme colors */
+    --background: 260 33% 98%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    /* Mode colors - will be updated dynamically */
+    --mode-primary: 210 100% 50%;
+    --mode-secondary: 160 100% 40%;
+
+    /* Light purple as secondary */
+    --secondary: 250 100% 94%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    /* Light purple as accent */
+    --accent: 250 100% 94%;
+    --accent-foreground: 222 47% 11%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: var(--mode-primary);
+
+    --radius: 0.75rem;
+    
+    --primary: var(--mode-primary);
+    --primary-foreground: 210 40% 98%;
+  }
+
+  .dark {
+    /* Pure black background - core dark theme color */
+    --background: 0 0% 0%;
+    --foreground: 0 0% 98%;
+
+    /* Pure black cards with slight difference */
+    --card: 0 0% 3%;
+    --card-foreground: 0 0% 98%;
+
+    /* Pure black popovers with slight difference */
+    --popover: 0 0% 3%;
+    --popover-foreground: 0 0% 98%;
+
+    /* Pure black secondary with slight difference */
+    --secondary: 0 0% 5%;
+    --secondary-foreground: 0 0% 98%;
+
+    /* Dark gray for muted elements */
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 65%;
+
+    /* Dark gray for accent elements */
+    --accent: 0 0% 8%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    
+    --primary: var(--mode-primary);
+    --primary-foreground: 0 0% 0%;
+  }
+}

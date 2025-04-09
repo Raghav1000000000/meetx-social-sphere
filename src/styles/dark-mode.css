@@ -1,0 +1,20 @@
+
+/* Dark mode styles */
+.dark .card,
+.dark .button,
+.dark .input {
+  @apply border-gray-700;
+}
+
+.dark .text-muted-foreground {
+  @apply text-gray-400;
+}
+
+.dark .bg-background {
+  @apply bg-gray-900;
+}
+
+/* Let's create test document class for generating test screenshots */
+.test-document {
+  @apply hidden;
+}
