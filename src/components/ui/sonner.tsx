@@ -1,11 +1,31 @@
 
+/**
+ * Sonner Toast Component
+ * 
+ * A customized wrapper around the Sonner toast library that integrates with our
+ * application's theme system. This component automatically adapts to the current
+ * theme (light/dark) and applies our design system styles to toast notifications.
+ * 
+ * @see https://sonner.emilkowal.ski/ for original Sonner documentation
+ */
+
 import { useTheme } from "@/contexts/ThemeContext";
 import { Toaster as Sonner } from "sonner";
+import { useEffect } from "react";
 
 type ToasterProps = React.ComponentProps<typeof Sonner>;
 
+/**
+ * Toaster component for displaying toast notifications
+ * Automatically adapts to the current theme and applies our design system
+ */
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme } = useTheme();
+  
+  // Log when the theme changes for debugging purposes
+  useEffect(() => {
+    console.log("Toast theme updated:", theme);
+  }, [theme]);
 
   return (
     <Sonner

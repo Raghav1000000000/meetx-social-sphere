@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -44,7 +43,7 @@
   }
 
   .dark {
-    /* Pure black background */
+    /* Pure black background - core dark theme color */
     --background: 0 0% 0%;
     --foreground: 0 0% 98%;
 
@@ -118,7 +117,7 @@
   }
   
   .meetx-card {
-    @apply bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl;
+    @apply bg-white dark:bg-black rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl;
   }
   
   .live-pulse {
@@ -144,12 +143,12 @@
 
   /* Professional mode specific styles */
   .professional-theme {
-    @apply bg-gradient-to-br from-blue-500/10 to-teal-500/5 dark:from-blue-900/10 dark:to-teal-900/5;
+    @apply bg-gradient-to-br from-blue-500/10 to-teal-500/5 dark:from-blue-900/5 dark:to-teal-900/5;
   }
 
   /* Social mode specific styles */
   .social-theme {
-    @apply bg-gradient-to-br from-pink-500/10 to-yellow-500/5 dark:from-pink-900/10 dark:to-yellow-900/5;
+    @apply bg-gradient-to-br from-pink-500/10 to-yellow-500/5 dark:from-pink-900/5 dark:to-yellow-900/5;
   }
 }
 
