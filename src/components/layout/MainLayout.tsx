@@ -4,6 +4,7 @@ import { Sidebar, SidebarContent, SidebarProvider } from '@/components/ui/sideba
 import Navbar from './Navbar';
 import SidebarNav from './SidebarNav';
 import { Toaster } from '@/components/ui/sonner';
+import SidebarToggleButton from './SidebarToggleButton';
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -19,6 +20,9 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       <div className="min-h-screen flex w-full bg-background">
         <Sidebar>
           <SidebarContent>
+            <div className="flex justify-end p-2">
+              <SidebarToggleButton className="md:hidden" />
+            </div>
             <SidebarNav />
           </SidebarContent>
         </Sidebar>

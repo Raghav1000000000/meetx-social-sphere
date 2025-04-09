@@ -3,14 +3,16 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { SidebarTrigger } from '@/components/ui/sidebar';
+import { SidebarTrigger, useSidebar } from '@/components/ui/sidebar';
 import { 
   Bell, 
   MessageSquare, 
   User, 
   Settings, 
   LogOut, 
-  Menu 
+  Menu,
+  ChevronLeft,
+  ChevronRight 
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -31,6 +33,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 const Navbar: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { mode } = useTheme();
+  const { state: sidebarState, toggleSidebar } = useSidebar();
 
   // This would be replaced with actual auth logic
   const handleLogout = () => {
@@ -40,12 +43,19 @@ const Navbar: React.FC = () => {
   return (
     <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-16 items-center px-4 sm:px-6">
-        <div className="md:hidden">
-          <SidebarTrigger>
-            <Button variant="ghost" size="icon" className="mr-2">
-              <Menu className="h-5 w-5" />
-            </Button>
-          </SidebarTrigger>
+        <div className="flex items-center">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="mr-2" 
+            onClick={toggleSidebar}
+            aria-label={`${sidebarState === 'expanded' ? 'Collapse' : 'Expand'} sidebar`}
+          >
+            {sidebarState === 'expanded' ? 
+              <ChevronLeft className="h-5 w-5" /> : 
+              <ChevronRight className="h-5 w-5" />
+            }
+          </Button>
         </div>
 
         <Link to="/" className="flex items-center gap-2 mr-4">
