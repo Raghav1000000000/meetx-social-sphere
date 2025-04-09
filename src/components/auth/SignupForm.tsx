@@ -1,6 +1,6 @@
 
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -15,6 +15,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { toast } from 'sonner';
+import { useAuth } from '@/contexts/AuthContext';
+import { useTheme } from '@/contexts/ThemeContext';
 
 // Define form validation schema
 const signupSchema = z.object({
@@ -27,6 +29,7 @@ const signupSchema = z.object({
     .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
     .regex(/[0-9]/, 'Password must contain at least one number'),
   confirmPassword: z.string(),
+  type: z.enum(['professional', 'social'])
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
   path: ["confirmPassword"],
@@ -39,6 +42,11 @@ type SignupFormValues = z.infer<typeof signupSchema>;
  * Includes form validation and submission handling
  */
 const SignupForm = () => {
+  const { register } = useAuth();
+  const { mode } = useTheme();
+  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   // Initialize form with validation schema
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
@@ -47,26 +55,45 @@ const SignupForm = () => {
       email: '',
       password: '',
       confirmPassword: '',
+      type: mode
     },
   });
 
   // Form submission handler
   const onSubmit = async (data: SignupFormValues) => {
     try {
-      // Mock API call - would be replaced with actual API call
-      console.log('Signup data:', data);
+      setIsSubmitting(true);
+      
+      // Register user
+      await register({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        type: data.type,
+        // Add default fields based on user type
+        ...(data.type === 'professional' ? {
+          title: 'New Professional',
+          skills: []
+        } : {
+          bio: 'New to MeetX',
+          interests: []
+        })
+      });
       
       // Show success message
       toast.success('Account created successfully!', {
-        description: 'Please check your email to verify your account.',
+        description: 'Welcome to MeetX!',
       });
       
-      // In a real app, would redirect to login or onboarding
+      // Redirect to discover page
+      navigate('/discover');
     } catch (error) {
       console.error('Signup error:', error);
       toast.error('Failed to create account', {
-        description: 'Please try again later.',
+        description: error instanceof Error ? error.message : 'Please try again later.',
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -136,9 +163,42 @@ const SignupForm = () => {
               </FormItem>
             )}
           />
+          
+          <FormField
+            control={form.control}
+            name="type"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Account Type</FormLabel>
+                <div className="flex space-x-4">
+                  <Button
+                    type="button"
+                    variant={field.value === 'professional' ? 'default' : 'outline'}
+                    className={field.value === 'professional' ? 'bg-mode-primary' : ''}
+                    onClick={() => form.setValue('type', 'professional')}
+                  >
+                    Professional
+                  </Button>
+                  <Button
+                    type="button"
+                    variant={field.value === 'social' ? 'default' : 'outline'}
+                    className={field.value === 'social' ? 'bg-mode-primary' : ''}
+                    onClick={() => form.setValue('type', 'social')}
+                  >
+                    Social
+                  </Button>
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-          <Button type="submit" className="w-full bg-meetx-purple hover:bg-meetx-purple-dark">
-            Sign Up
+          <Button 
+            type="submit" 
+            className="w-full bg-meetx-purple hover:bg-meetx-purple-dark"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Creating Account...' : 'Sign Up'}
           </Button>
         </form>
       </Form>

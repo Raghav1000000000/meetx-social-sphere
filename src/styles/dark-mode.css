@@ -14,7 +14,48 @@
   @apply bg-gray-900;
 }
 
+/* Form elements in dark mode */
+.dark input,
+.dark textarea,
+.dark select {
+  @apply bg-gray-800 border-gray-700;
+}
+
+/* Card styles for dark mode */
+.dark .meetx-card {
+  @apply bg-black dark:bg-opacity-80 border-gray-800 shadow-lg hover:shadow-xl;
+}
+
+/* Button styles for dark mode */
+.dark .bg-mode-primary {
+  @apply text-white;
+}
+
+/* Documentation page styles */
+.dark code {
+  @apply bg-gray-800 text-gray-300;
+}
+
 /* Let's create test document class for generating test screenshots */
 .test-document {
+  @apply hidden;
+}
+
+/* Animation support for dark mode transitions */
+.mode-transition-element {
+  @apply transition-colors duration-300;
+}
+
+/* Dark mode specific gradient backgrounds */
+.dark .professional-theme {
+  @apply bg-gradient-to-br from-blue-900/10 to-teal-900/5;
+}
+
+.dark .social-theme {
+  @apply bg-gradient-to-br from-pink-900/10 to-yellow-900/5;
+}
+
+/* Console logging for theme changes */
+.theme-log {
   @apply hidden;
 }

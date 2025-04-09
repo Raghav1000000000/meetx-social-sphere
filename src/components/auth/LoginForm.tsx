@@ -1,6 +1,6 @@
 
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -15,6 +15,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { toast } from 'sonner';
+import { useAuth } from '@/contexts/AuthContext';
 
 // Define form validation schema
 const loginSchema = z.object({
@@ -30,6 +31,10 @@ type LoginFormValues = z.infer<typeof loginSchema>;
  * Includes form validation and submission handling
  */
 const LoginForm = () => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   // Initialize form with validation schema
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -43,18 +48,23 @@ const LoginForm = () => {
   // Form submission handler
   const onSubmit = async (data: LoginFormValues) => {
     try {
-      // Mock API call - would be replaced with actual API call
-      console.log('Login data:', data);
+      setIsSubmitting(true);
+      
+      // Attempt login
+      await login(data.email, data.password);
       
       // Show success message
       toast.success('Logged in successfully!');
       
-      // In a real app, would redirect to dashboard or home
+      // Redirect to discover page
+      navigate('/discover');
     } catch (error) {
       console.error('Login error:', error);
       toast.error('Failed to login', {
         description: 'Please check your credentials and try again.',
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -105,8 +115,12 @@ const LoginForm = () => {
             )}
           />
 
-          <Button type="submit" className="w-full bg-meetx-purple hover:bg-meetx-purple-dark">
-            Log In
+          <Button 
+            type="submit" 
+            className="w-full bg-meetx-purple hover:bg-meetx-purple-dark"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Logging in...' : 'Log In'}
           </Button>
         </form>
       </Form>
